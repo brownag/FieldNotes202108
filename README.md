@@ -2,10 +2,13 @@
 ### Implications for Soil Taxonomy, Interpretations, and Mapping
 ### Field Notes Presentation August 10th, 2021
 <center>
+  
 **[PDF Download](https://github.com/brownag/FieldNotes202108/blob/main/SensitivityPedons/SensitivityPedons.pdf)**
 
 **[R Scripts](https://github.com/brownag/FieldNotes202108/tree/main/R)**
+  
 </center>
+
 #### Description:
 
 Soil scientists spend valuable time getting to know soils and the landscapes they occur in by digging and describing soils in the field. In many areas soil properties vary nearly continuously in a complex pattern and over short spatial scales—making geostatistical/quantitative assessment of spatial variability in the field impractical. To integrate variance between and within individual observations tacit experience of soil scientists is employed. In this context, I ask the question: How can routine field observations be leveraged to better justify to our users the choices made in correlation of soil map units?
