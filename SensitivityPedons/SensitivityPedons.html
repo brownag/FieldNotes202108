@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>SensitivityPedons.knit</title>
+    <meta charset="utf-8" />
+    <script src="SensitivityPedons_files/header-attrs-2.8/header-attrs.js"></script>
+    <link href="SensitivityPedons_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="SensitivityPedons_files/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link href="SensitivityPedons_files/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="theme.css" type="text/css" />
+    <link rel="stylesheet" href="theme-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+class: titleSlide
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+.pull-left[
+
+  ## Sensitivity Analysis for Standard Profile Descriptions
+  
+  #### Implications for Soil Taxonomy, Interpretations, and Mapping
+  
+  &lt;br&gt;&lt;br&gt;&lt;br&gt;
+  
+  #### FIELD NOTES WEBINAR - August 2021 
+
+]
+
+.right[.large[&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+              Andrew G. Brown &lt;br&gt;
+              &lt;a href="mailto:andrew.g.brown@usda.gov"&gt;&lt;svg viewBox="0 0 576 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M160 448c-25.6 0-51.2-22.4-64-32-64-44.8-83.2-60.8-96-70.4V480c0 17.67 14.33 32 32 32h256c17.67 0 32-14.33 32-32V345.6c-12.8 9.6-32 25.6-96 70.4-12.8 9.6-38.4 32-64 32zm128-192H32c-17.67 0-32 14.33-32 32v16c25.6 19.2 22.4 19.2 115.2 86.4 9.6 6.4 28.8 25.6 44.8 25.6s35.2-19.2 44.8-22.4c92.8-67.2 89.6-67.2 115.2-86.4V288c0-17.67-14.33-32-32-32zm256-96H224c-17.67 0-32 14.33-32 32v32h96c33.21 0 60.59 25.42 63.71 57.82l.29-.22V416h192c17.67 0 32-14.33 32-32V192c0-17.67-14.33-32-32-32zm-32 128h-64v-64h64v64zm-352-96c0-35.29 28.71-64 64-64h224V32c0-17.67-14.33-32-32-32H96C78.33 0 64 14.33 64 32v192h96v-32z"&gt;&lt;/path&gt;&lt;/svg&gt;&amp;nbsp;andrew.g.brown@usda.gov&lt;/a&gt;
+              &lt;br&gt;&lt;br&gt;
+]]
+
+---
+class: bodySlide
+&lt;br&gt;
+
+## Sensitivity and Uncertainty Analysis
+
+**Sensitivity analysis**: Understand _sources_ of uncertainty
+
+ - Applying constraints to inform inferences about a system 
+
+
+**Uncertainty analysis**: Propagation and _quantification_ of uncertainty
+  
+ - "Overview of Soil Survey Database History with Uncertainty implications"
+   - https://www.nrcs.usda.gov/Internet/FSE_DOCUMENTS/nrcs142p2_050742.pdf
+ 
+ - NSSH 618.2.C Collecting, Testing, and Populating Soil Property Data
+   - Original proposal to use percentiles for Range in Characteristics&lt;br&gt;
+      https://github.com/ncss-tech/soil-range-in-characteristics
+
+---
+class: bodySlideNOBR
+&lt;br&gt;
+
+## Soil Profile Geometry
+
+- Soil descriptions as "emulators of natural variation"
+
+.pull-left[
+### Geometric Elements
+
+- Location description / coordinates
+- **Layer top and bottom depths**
+- **Boundaries**
+- Structure 
+- Fragments / Artifacts
+]
+
+.pull-right[
+![](img/ninigret.png)
+&lt;small&gt;_Source_: http://nesoil.com/ri/oldpedons/Ninigret_historic.pdf&lt;/small&gt;
+]
+
+??? Soil descriptions as emulators of natural variation
+
+Routine soil descriptions are aggregated to create soil survey products. 
+
+ - In the past the individual points and source data were not considered the "product," yet there are increasing requests related to these data from soil survey users 
+ 
+ - In update work, we are confronted with "changes" in soil properties due to level of detail in descriptions, new lab data, layers, taxonomic units and more. 
+
+  - Are these "changes" meaningful in context of "similar soils"?
+  - How can we systematically evaluate the similarity of soil concepts with different depth support?
+  - How can we maximize value from historic data that may be cost-prohibitive to replicate?
+  - How can we get more information from _new_ descriptions?
+  
+---
+class: bodySlideNOBR
+&lt;br&gt;
+
+## Lumpers v.s. Splitters
+
+.pull-left[
+
+![](img/minniecreek_pittape.jpg)
+
+]
+
+.pull-right[
+
+![](img/minniecreek_golftees.jpg)
+
+]
+
+---
+class: bodySlideNOBR
+&lt;br&gt;
+## Lumpers v.s. Splitters
+**Pedons** (source: FY2020 SQLite snapshots)
+ - NASIS Pedon: 2,897,664 horizons in 573,919 NASIS pedons; ~5 layers each
+ - KSSL/LDM: 410,011 horizons in 65,952 laboratory pedons; ~6 layers each
+ 
+**Components** (source: Soil Data Access)
+ - SSURGO: 3,474,612 horizons in 868,508 components; ~4 layers each
+ - STATSGO: 333,388 horizons in 102,729 components; ~3 layers each
+ 
+**GlobalSoilMap** 
+ - 6 standard depth intervals:&lt;br&gt;
+     0-5 cm, 5-15 cm, 15-30 cm, 30-60 cm, 60-100 cm and 100-200 cm
+ - &lt;small&gt;https://www.isric.org/sites/default/files/GlobalSoilMap_specifications_december_2015_2.pdf&lt;/small&gt;
+
+---
+class: bodySlide
+&lt;br&gt;
+
+## Trends in "horizonation" schemes
+
+Average number of layers per component (per SSA), binned by decade (correlation year)
+
+![](img/complayer_by_year.png)
+
+---
+class: bodySlideNOBR
+&lt;br&gt;
+
+&lt;img src="img/complayer_ratio_map_conus.png" alt="drawing" width="800"/&gt;
+
+---
+class: bodySlideLite
+&lt;br&gt;
+
+## Horizon Boundaries
+
+.pull-left[
+#### Distinctness
+![](img/boundary_distinctness.png)
+
+#### Topography
+![](img/boundary_topography.png)
+]
+
+.pull-right[
+![](img/boundary_topography_drawing.png)
+&lt;small&gt;_Source_: [Field Book for Describing and Sampling Soils](https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/research/guide/?cid=nrcs142p2_054184)&lt;/small&gt;
+]
+
+---
+class: bodySlide
+&lt;br&gt;
+
+## Soil Profile Sketches and Simulation with {aqp} R package
+
+.left-column[
+  [![](https://raw.githubusercontent.com/ncss-tech/aqp/master/misc/hexstickers/aqp_sticker_v2.png)](http://ncss-tech.github.io/aqp/)
+
+  &lt;br&gt;
+
+  [![](https://www.r-project.org/logo/Rlogo.png)](https://www.r-project.org/)
+]
+
+.right-column[
+
+The Algorithms for Quantitative Pedology (AQP) project is a suite of R packages for quantitative analysis of soil profile data. 
+ - "aqp" package provides a vocabulary (functions and data structures)
+ - "soilDB" package provides interfaces to databases and web services
+ 
+AQP Website: http://ncss-tech.github.io/AQP/
+
+aqp R package on GitHub: https://github.com/ncss-tech/aqp
+
+SSSA 2020 Presentations: https://github.com/brownag/SSSA2020/
+]
+
+---
+class: bodySlideNOBR
+&lt;br&gt;
+
+## OSD Profile Sketches
+.center[
+Using representative depths as boundaries
+&lt;img src="SensitivityPedons_files/figure-html/unnamed-chunk-1-1.png" width="504" /&gt;
+]
+
+---
+class: bodySlideNOBR
+&lt;br&gt;
+
+## OSD Profile Sketches + distinctness
+.center[
+Using `aqp::hzDistinctnessCodeOffset()`
+&lt;img src="SensitivityPedons_files/figure-html/unnamed-chunk-2-1.png" width="504" /&gt;
+]
+
+---
+class: bodySlideNOBR
+&lt;br&gt;
+
+## Generalization of Horizons
+
+.center[
+Using regular expressions to group similar horizons with `aqp::generalize.hz()`
+&lt;img src="SensitivityPedons_files/figure-html/unnamed-chunk-3-1.png" width="504" /&gt;
+]
+
+---
+class: bodySlideNOBR
+&lt;br&gt;
+
+## Horizon Boundary Sketches
+
+&lt;small&gt;_Source_: https://ncss-tech.github.io/AQP/aqp/hz-boundaries.html&lt;/small&gt;
+![](img/boundary_types.png)
+
+---
+class: bodySlideNOBR
+&lt;br&gt;
+
+## Perturbation-based Methods
+
+.pull-left[
+ - [`aqp::perturb()`](http://ncss-tech.github.io/aqp/docs/reference/perturb.html) "Perturbs" the _boundary thickness between horizons_ or the _thickness of horizons_ using a standard deviation specified as a horizon-level attribute. 
+]
+
+.pull-right[
+By the empirical rule:
+ - 68% of the boundary/horizon thicknesses within 1 standard deviation of source
+ - 95% within 2 standard deviations
+ - 99.7% within 3 standard deviations
+]
+
+Distributional assumption applies only to the _geometry_. Not horizon or aggregate "site level" properties. 
+
+ - Documentation: http://ncss-tech.github.io/aqp/docs/reference/perturb.html
+ 
+ - Demo: https://ncss-tech.github.io/AQP/aqp/perturb.html
+ 
+---
+class: bodySlideNOBR
+&lt;br&gt;
+
+.center[
+
+#### "Normal" Boundaries
+
+&lt;img src="img/boundaries.gif" width="80%"/&gt;
+
+]
+
+---
+class: bodySlideNOBR
+&lt;br&gt;
+.center[
+
+#### Minniecreek Generalized Horizons
+
+&lt;img src="img/minniecreek_genhz.png" width="80%"/&gt;
+
+]
+
+---
+class: bodySlideNOBR
+&lt;br&gt;
+#### Thickness of Generalized Horizons
+n=100 realizations for each of 4 profiles 
+![](img/thickness_genhz.png)
+
+---
+class: bodySlideNOBR
+&lt;br&gt;
+
+#### Example: Organic Carbon Stocks
+n=10,000 aggregate carbon stocks; constant 2.5cm standard deviation  
+![](img/carbon_stocks_lab.png)
+
+---
+class: bodySlideNOBR
+&lt;br&gt;
+
+#### Example: Organic Carbon Stocks
+
+n=10,000 aggregate carbon stocks using field horizon boundary distinctness
+![](img/carbon_stocks_lab_distinctness.png)
+
+---
+class: bodySlide
+&lt;br&gt;
+
+## "Problems"
+
+### "Narrow" or disturbed observation methods (probe, bucket auger)
+
+### Irregular and Broken Topography
+
+### Total Soil Depth 
+
+### Integrating results from multiple pedons -&gt; component and series decisions
+
+&lt;!-- ???  --&gt;
+&lt;!-- https://www.sciencedirect.com/science/article/pii/S0016706118312485 --&gt;
+
+---
+class: bodySlide
+&lt;br&gt;
+
+## Thank you!
+
+Feel free to contact me with comments/questions/criticism. 
+
+Presentation and related materials on GitHub: https://github.com/brownag/FieldNotes202108
+
+We also welcome you to take part in discussions related to {aqp} algorithms and {soilDB} data access methods on the GitHub issues pages:
+
+ - https://github.com/ncss-tech/aqp/issues
+ 
+ - https://github.com/ncss-tech/soilDB/issues
+
+_USDA is an equal opportunity provider, employer, and lender._
+
+.left-column[
+  &lt;br&gt;
+  ![](https://github.com/brownag.png)
+]
+
+.right-column[
+  #### Andrew G. Brown
+
+&lt;a href="mailto:andrew.g.brown@usda.gov"&gt;&lt;svg viewBox="0 0 576 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M160 448c-25.6 0-51.2-22.4-64-32-64-44.8-83.2-60.8-96-70.4V480c0 17.67 14.33 32 32 32h256c17.67 0 32-14.33 32-32V345.6c-12.8 9.6-32 25.6-96 70.4-12.8 9.6-38.4 32-64 32zm128-192H32c-17.67 0-32 14.33-32 32v16c25.6 19.2 22.4 19.2 115.2 86.4 9.6 6.4 28.8 25.6 44.8 25.6s35.2-19.2 44.8-22.4c92.8-67.2 89.6-67.2 115.2-86.4V288c0-17.67-14.33-32-32-32zm256-96H224c-17.67 0-32 14.33-32 32v32h96c33.21 0 60.59 25.42 63.71 57.82l.29-.22V416h192c17.67 0 32-14.33 32-32V192c0-17.67-14.33-32-32-32zm-32 128h-64v-64h64v64zm-352-96c0-35.29 28.71-64 64-64h224V32c0-17.67-14.33-32-32-32H96C78.33 0 64 14.33 64 32v192h96v-32z"&gt;&lt;/path&gt;&lt;/svg&gt;&amp;nbsp;andrew.g.brown@usda.gov&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://github.com/brownag"&gt;&lt;svg viewBox="0 0 496 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt;&amp;nbsp;brownag&lt;/a&gt;&lt;br&gt;
+
+]
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
