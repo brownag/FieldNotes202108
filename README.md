@@ -3,7 +3,7 @@
 ### Field Notes Presentation August 10th, 2021
 <center>
   
-**[PDF Download](https://github.com/brownag/FieldNotes202108/blob/main/SensitivityPedons/SensitivityPedons.pdf)**
+**[PDF Download](https://raw.githubusercontent.com/brownag/FieldNotes202108/main/SensitivityPedons/SensitivityPedons.pdf)**
 
 **[R Scripts](https://github.com/brownag/FieldNotes202108/tree/main/R)**
   
